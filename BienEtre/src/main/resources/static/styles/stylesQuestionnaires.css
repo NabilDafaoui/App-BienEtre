@@ -1,0 +1,80 @@
+/* Body - Page entière */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Titre */
+h1,h2 {
+    color: #E3867D;
+}
+
+/* Thème A - Professionnel */
+#themeProfessionnel,
+#themeSanté,
+#themeFinancier,
+#themeSocial {
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(140, 135, 135, 0.1);
+    margin: 20px;
+    padding: 20px;
+    max-width: 600px;
+    width: 90%;
+}
+
+/* Formulaire */
+fieldset {
+    border: 2px solid #555; /* Bordure sombre */
+    border-radius: 8px;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+legend {
+    color: #555; /* Couleur de texte sombre */
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+label {
+    margin-right: 15px;
+    color: white; /* Couleur de texte sombre */
+}
+
+input[type="radio"] {
+    margin-right: 5px;
+}
+
+input[type="radio"]:checked + label {
+    color: #FFF;
+    background-color: #4caf50; /* Couleur de fond verte */
+    border-radius: 5px;
+    margin: 5px 10px;
+}
+
+button {
+    background-color: #4caf50; /* Couleur de fond verte */
+    color: #FFF;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049; /* Légèrement plus foncé au survol */
+}
+
+/* Numéro de question */
+label::before {
+    content: attr(data-number);
+    margin-bottom: 5px;
+    font-weight: bold;
+}

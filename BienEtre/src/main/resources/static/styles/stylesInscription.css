@@ -1,0 +1,57 @@
+/* Body - Page entière */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #b4e4ff, #fff);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(45deg, #f4f4f4 25%, transparent 25%, transparent 75%, #f4f4f4 75%, #f4f4f4), linear-gradient(45deg, #f4f4f4 25%, transparent 25%, transparent 75%, #f4f4f4 75%, #f4f4f4);
+    background-size: 20px 20px;
+}
+
+/* Formulaire d'inscription */
+form {
+    background-color: #363636;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(140, 135, 135, 0.1);
+    margin: 20px;
+    padding: 20px;
+    max-width: 400px;
+    width: 90%;
+}
+
+h2 {
+    color: #212121;
+    border-bottom: 2px solid #a2a0a0;
+    padding-bottom: 10px;
+}
+
+label {
+    color: #d4d4d4;
+    display: block;
+    margin-bottom: 10px;
+}
+
+input {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}

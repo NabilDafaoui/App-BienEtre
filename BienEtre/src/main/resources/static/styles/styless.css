@@ -1,0 +1,89 @@
+/* Styles spécifiques à la page d'évaluation */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+}
+
+#evaluation-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.theme {
+    margin-bottom: 20px;
+}
+
+label {
+    color: #1c1e21;
+    margin-right: 10px;
+    width: 30%;
+    display: inline-block;
+
+}
+
+input[type="number"] {
+    width: 40px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #a1a9bb;
+}
+
+button[type="submit"] {
+    background-color: #1877f2;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #1650cc;
+}
+
+/* Styles spécifiques à la page de résultat */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.bilan-container {
+    max-width: 800px;
+    margin: 50px auto;
+    background-color: #AFEEEE; /* Couleur de fond */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-align: center;
+    color: #e3867d; /* Couleur du titre */
+}
+
+h2 {
+    margin-top: 20px;
+    color: #e3867d; /* Couleur des sous-titres */
+}
+
+p {
+    margin: 10px 0;
+    color: #333; /* Couleur du texte principal */
+}
+
+canvas {
+    background-color: white;
+    margin-top: 20px;
+    max-width: 100%;
+    border: 1px solid #e3867d; /* Couleur de la bordure du graphique */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affichage des résultats</title>
+    <link rel="stylesheet" href="../styles/styless.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="bilan-container">
+        <h1>Vos résultats</h1>
+        <div id="resultats"></div>
+        <div id="noteFinal"></div>
+        <div id="notePondéré"></div>
+        <canvas class="bg-white" id="radarChart"></canvas>
+    </div>
+
+    <script>
+        // Utilisez AJAX pour récupérer les résultats depuis la base de données
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "../php/get_results.php", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var results = JSON.parse(xhr.responseText);
+                displayResults(results);
+            }
+        };
+        xhr.send();
+
+        function displayResults(results) {
+            // Affichez les résultats sur la page
+            var resultatsDiv = document.getElementById("resultats");
+            resultatsDiv.innerHTML = "<h2>Voici vos résultats :</h2>";
+
+            // Affichage des résultats détaillés et calcul de la note finale
+            var noteFinal = 0;
+            for (var theme in results) {
+                if (results.hasOwnProperty(theme)) {
+                    var note = parseFloat(results[theme]);
+                    var themeFormatted = theme.charAt(0).toUpperCase() + theme.slice(1).toLowerCase();
+                    resultatsDiv.innerHTML += "<p>" + themeFormatted + ": " + note.toFixed(2) + "</p>";
+                    noteFinal += note;
+                }
+            }
+
+            // Affichage de la note finale
+            var noteFinalDiv = document.getElementById("noteFinal");
+            noteFinalDiv.innerHTML = "<h3>Votre note finale est : " + (noteFinal / 4).toFixed(2) + " sur 5</h3>";
+
+            // Affichage de la note finale pondérée
+            var noteFinalPondéréDiv = document.getElementById("notePondéré");
+            
+            // Récupérer les coeff de chaque theme
+            var coefSocial = parseInt( sessionStorage.getItem('social'));
+            var coefProfessionnel = parseInt( sessionStorage.getItem('professionnel'));
+            var coefSanté = parseInt( sessionStorage.getItem('santé') );
+            var coefFiancier = parseInt( sessionStorage.getItem('financier') );
+
+            var sommeCoef = coefSanté + coefProfessionnel + coefSocial + coefFiancier;
+            var notePondéré = (results['santé'] * coefSanté + results['professionnel'] * coefProfessionnel + results['social'] * coefSocial + results['financier'] * coefFiancier) / sommeCoef;
+            noteFinalPondéréDiv.innerHTML = "<h4>Votre note finale pondérée est : " + notePondéré.toFixed(2) + "</h4>";
+        
+    var résultats= Object.values(results);
+        
+            // Créez le graphique à partir des résultats
+            const config = {
+                type: 'radar',
+                data: {
+                    labels: ['Santé', 'Social', 'Professionnel', 'Financier'],
+                    datasets: [{
+                        data: résultats,                       
+                         fill: true,
+                        backgroundColor: 'rgba(255, 99, 132,0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        pointBorderColor: '#fff',
+                    }, {
+                        data: [5, 5, 5, 5],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 255, 255,0.2)',
+                        borderColor: 'rgba(255, 255, 255,0)',
+                        pointBackgroundColor: 'rgba(255, 255, 255,0)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor:'rgba(255, 255, 255,0)'
+                    },
+                    {
+                        data: [0, 0, 0, 0],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 255, 255,0.2)',
+                        borderColor: 'rgba(255, 255, 255,0)',
+                        pointBackgroundColor: 'rgba(255, 255, 255,0)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor:'rgba(255, 255, 255,0)'
+                    }]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    scale: {
+                        ticks: {
+                            beginAtZero: false,
+                            min: 1,
+                            max: 5.0,
+                            stepSize: 1,
+                        }
+                    }
+                }
+            };
+
+            var ctx = document.getElementById('radarChart').getContext('2d');
+            var myRadarChart = new Chart(ctx, config);
+        }
+    </script>
+</body>
+</html>

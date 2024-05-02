@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Évaluation de l'Importance</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styless.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+
+    <section class=" font-family: Montserrat">
+        <div class="flex justify-center items-center">
+            <img src="nt2a.png" width="10%" alt="alternate text">
+        </div>
+        <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
+            <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
+                Importance des thèmes
+            </a>
+            <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 bg-[#AFEEEE]">
+                <div class="p-6 space-y-4 md:space-y-6 sm:p-8 bg-[#AFEEEE]">
+                    <h1 class="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl">Coefficient</h1>
+                    <form id="evaluation-form">
+
+                        <div>
+
+                            <label for="social">Social:</label>
+                            <input type="number" id="social" name="social" min="1" max="5">
+
+                            <br>
+                
+                            <label for="professionnel">Professionnel:</label>
+                            <input type="number" id="professionnel" name="professionnel" min="1" max="5">
+
+                            <br>
+                
+                            <label for="santé">Santé:</label>
+                            <input type="number" id="santé" name="santé" min="1" max="5">
+
+                            <br>
+                
+                            <label for="financier">Financier:</label>
+                            <input type="number" id="financier" name="financier" min="1" max="5">
+
+                        </div>
+                
+                        <button type="submit">Soumettre</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+      </section>
+
+    <script>
+        document.getElementById('evaluation-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var social = parseInt(document.getElementById('social').value);
+            var professionnel = parseInt(document.getElementById('professionnel').value);
+            var santé = parseInt(document.getElementById('santé').value);
+            var financier = parseInt(document.getElementById('financier').value);
+
+           // Stocker les données dans sessionStorage
+    sessionStorage.setItem('social', social);
+    sessionStorage.setItem('professionnel', professionnel);
+    sessionStorage.setItem('santé', santé);
+    sessionStorage.setItem('financier', financier);
+
+            window.location.href ="resultatQuestionnaire.html" ;
+
+        });
+    </script>
+</body>
+</html>
+
+

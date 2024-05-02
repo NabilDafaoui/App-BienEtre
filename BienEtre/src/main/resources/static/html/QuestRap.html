@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../styles/stylesQuestionnaires.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Questionnaire Rapide</title>
+</head>
+<body>
+    <div class="flex justify-center items-center">
+        <img src="nt2a.png" width="10%" alt="alternate text">
+    </div>
+    <h1 class="font-bold">Questionnaire Rapide</h1>
+
+    <div class="font-bold bg-[#AFEEEE]" id="themeProfessionnel">
+        <h2 class="">Professionnel</h2>
+        <form id="ProfessionnelForm">
+            <!-- Questions seront insérées ici -->
+        </form>
+    </div>
+    
+    <!-- Thème Santé -->
+    <div class="font-bold bg-[#AFEEEE]" id="themeSanté">
+        <h2 class="">Santé</h2>
+        <form id="SantéForm">
+            <!-- Questions seront insérées ici -->
+        </form>
+    </div>
+    
+    <!-- Thème Financier -->
+    <div class="font-bold bg-[#AFEEEE]" id="themeFinancier">
+        <h2 class="">Financier</h2>
+        <form id="FinancierForm">
+            <!-- Questions seront insérées ici -->
+        </form>
+    </div>
+    
+    <!-- Thème Social -->
+    <div class="font-bold bg-[#AFEEEE]" id="themeSocial">
+        <h2 class="">Social</h2>
+        <form id="SocialForm">
+            <!-- Questions seront insérées ici -->
+        </form>
+    </div>
+    
+    <!-- Bouton Calculer et Enregistrer -->
+    <button type="button" onclick="calculateAndSaveAll()">Calculer et Enregistrer</button>
+    
+    <!-- JavaScript pour récupérer les questions -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Récupérer les questions pour chaque thème
+            getQuestionsForTheme('Professionnel');
+            getQuestionsForTheme('Santé');
+            getQuestionsForTheme('Financier');
+            getQuestionsForTheme('Social');
+        });
+    
+        function getQuestionsForTheme(theme) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "../php/get_questions.php?theme=" + theme, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var questions = JSON.parse(xhr.responseText);
+                    displayQuestions(theme, questions);
+                }
+            };
+            xhr.send();
+        }
+    
+        function displayQuestions(theme, questions) {
+            var formId = theme + 'Form';
+            var form = document.getElementById(formId);
+    
+            questions.forEach(function (question) {
+                var div = document.createElement('div');
+                var legend = document.createElement('legend');
+                legend.textContent = question.question_text;
+                div.appendChild(legend);
+    
+                for (var i = 0; i <= 5; i++) {
+                    var div1 = document.createElement('div');
+                    var input = document.createElement('input');
+                    input.type = 'radio';
+                    input.id = theme.toLowerCase() + '_q' + question.question_number + '_' + i;
+                    input.name = theme.toLowerCase() + '_question' + question.question_number;
+                    input.value = i;
+    
+                    var label = document.createElement('label');
+                    label.htmlFor = theme.toLowerCase() + '_q' + question.question_number + '_' + i;
+                    label.textContent = (i === 0) ? 'Pas du tout d\'accord' : (i === 5) ? 'Tout à fait d\'accord' : i;
+                    
+                    if(i==5){
+                        var labeltmp = document.createElement('label');
+                        labeltmp.textContent=""
+                        div.appendChild(labeltmp)
+                        div.appendChild(input)
+                        div.appendChild(label)
+                    }else{
+
+                        div.appendChild(label)
+                        div.appendChild(input)
+                    }
+                }
+    
+                form.appendChild(div);
+                form.appendChild(document.createElement('br'));
+            });
+        }
+    
+    
+function calculateAverage(formId) {
+        var form = document.getElementById(formId);
+        var divs = form.querySelectorAll('div');
+
+        var totalValue = 0;
+        var numQuestions = 0;
+
+        // Parcourir tous les divs du formulaire
+        divs.forEach(function(div) {
+            var radios = div.querySelectorAll('input[type="radio"]:checked');
+
+            // Parcourir tous les boutons radio cochés dans chaque div
+            radios.forEach(function(radio) {
+                var questionValue = parseInt(radio.value);
+                totalValue += questionValue;
+                numQuestions++;
+            });
+        });
+
+        // Calculer la moyenne si au moins une question a été répondu
+        if (numQuestions > 0) {
+            var average = totalValue / numQuestions;
+            return average ; 
+        } else {
+            alert("Veuillez répondre à au moins une question.");
+        }
+    }
+/*
+    function calculateTotal() {
+        // Appeler les fonctions calculateAverage pour chaque formulaire et additionner les résultats
+        var total = calculateAverage('ProfessionnelForm') + calculateAverage('themeBForm');
+        alert("Total des moyennes : " + total.toFixed(2));
+    }
+*/
+
+
+
+    function calculateAndSaveAll() {
+    // Appeler la fonction calculateAverage pour chaque formulaire et stocker les résultats dans un objet
+    var themes = {
+        'ProfessionnelForm': 'professionnel',
+        'SantéForm': 'santé',
+        'FinancierForm': 'financier',
+        'SocialForm': 'social'
+        // Ajoutez d'autres thèmes au besoin
+    };
+
+    var averages = {};
+
+    for (var formId in themes) {
+        if (themes.hasOwnProperty(formId)) {
+            var theme = themes[formId];
+            var average = calculateAverage(formId);
+            if (average !== undefined) {
+                averages[theme] = average;
+            }
+        }
+    }
+
+    // Enregistrez les moyennes dans la base de données en utilisant une requête asynchrone (AJAX)
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "../php/save_average.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            alert("Moyennes enregistrées avec succès!");
+            window.location.href = "ImportanceTheme.html";
+        }
+    };
+
+    // Envoyez les données à save_averages.php
+    xhr.send("averages=" + JSON.stringify(averages));
+}
+
+    </script>    
+	
+</body>
+</html>
